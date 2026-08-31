@@ -1,0 +1,14 @@
+{
+  "policy_number": "NF-7710",
+  "claims": [
+    {
+      "reference": "CL-2024-0912",
+      "date": "2024-11-03",
+      "peril": "storm",
+      "resolution": "approved",
+      "amount_eur": 1240
+    }
+  ],
+  "open_claims": 0,
+  "flags": []
+}

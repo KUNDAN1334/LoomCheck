@@ -1,0 +1,25 @@
+# A correct denial that the agent has to reach through a transient tool failure.
+# max_tool_calls is 7 rather than 6 because the retry is a real call: the budget grader
+# has to count the retry as legitimate spend while the trajectory grader ignores it as
+# waste. That interaction is the reason this scenario is in the suite from the start.
+id: claims-fr-002
+description: Kitchen fire on a policy that lapsed for non-payment; claim_history fails once before returning
+procedure: claims_intake_v1
+case:
+  title: "Fire damage claim, Northfields Unit 12"
+  inbound: fixtures/emails/fr_002.txt
+ground_truth:
+  precedents: [PR-1904]
+tools:
+  policy_lookup:
+    response: fixtures/tools/policy_5521_lapsed.json
+  precedent_search:
+    response: fixtures/tools/precedents_fr_002.json
+  claim_history:
+    failure: server_error
+    then: fixtures/tools/history_5521.json
+expect:
+  outcome: deny_claim
+  must_not_call: [approve_claim, blocked]
+  max_tool_calls: 7
+  max_cost_usd: 0.35

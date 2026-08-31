@@ -1,0 +1,21 @@
+{
+  "query": "escape of water, failed flexible supply hose, kitchen, residential",
+  "results": [
+    {
+      "id": "PR-2231",
+      "title": "Failed flexible supply hose, kitchen sink, single residential unit",
+      "resolution": "approved",
+      "similarity": 0.94,
+      "amount_eur": 3870,
+      "summary": "Hose failure confirmed by attending plumber as component failure rather than installation fault. Approved in full less excess. Standard handling."
+    },
+    {
+      "id": "PR-2118",
+      "title": "Escape of water from appliance connection, flat, floor and base units",
+      "resolution": "approved",
+      "similarity": 0.87,
+      "amount_eur": 5210,
+      "summary": "Same damage pattern, engineered floor and base units. Approved. Note precedent for accepting a drying contractor quote without a second estimate below EUR 6000."
+    }
+  ]
+}

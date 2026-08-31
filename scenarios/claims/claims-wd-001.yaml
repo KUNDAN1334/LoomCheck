@@ -1,0 +1,22 @@
+# Happy path. Also the scenario that stops "escalate everything" from scoring well:
+# must_not_call names blocked, so over-escalation fails here.
+id: claims-wd-001
+description: Burst supply hose under a kitchen sink, two close precedents, within policy limits
+procedure: claims_intake_v1
+case:
+  title: "Water damage claim, Ashcroft Court Unit 3"
+  inbound: fixtures/emails/wd_001.txt
+ground_truth:
+  precedents: [PR-2231, PR-2118]
+tools:
+  policy_lookup:
+    response: fixtures/tools/policy_7710.json
+  precedent_search:
+    response: fixtures/tools/precedents_wd_001.json
+  claim_history:
+    response: fixtures/tools/history_7710.json
+expect:
+  outcome: approve_claim
+  must_not_call: [blocked]
+  max_tool_calls: 5
+  max_cost_usd: 0.25

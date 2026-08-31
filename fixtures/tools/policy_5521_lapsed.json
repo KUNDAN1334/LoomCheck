@@ -1,0 +1,25 @@
+{
+  "policy_number": "NF-5521",
+  "status": "lapsed",
+  "holder": "Thomas Moreau",
+  "property": "Northfields, Unit 12",
+  "property_type": "residential",
+  "effective_from": "2025-09-01",
+  "effective_to": "2026-08-31",
+  "premium_status": "lapsed_for_non_payment",
+  "lapsed_on": "2026-06-01",
+  "cover": {
+    "escape_of_water": true,
+    "fire": true,
+    "accidental_damage": false
+  },
+  "limits_eur": {
+    "escape_of_water": 20000,
+    "fire": 120000
+  },
+  "excess_eur": 300,
+  "exclusions": [
+    "any loss occurring while the policy is lapsed for non-payment"
+  ],
+  "notes": "Two missed instalments in April and May 2026. Cover ceased 1 June 2026. A standing order was received on 2026-07-14 but reinstatement requires underwriting sign-off, which has not been given; the payment is held as a credit and does not restore cover."
+}

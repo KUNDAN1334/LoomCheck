@@ -1,0 +1,13 @@
+{
+  "query": "kitchen fire, cooking oil, policy lapsed for non-payment, later payment received",
+  "results": [
+    {
+      "id": "PR-1904",
+      "title": "Fire loss during lapse, payment received after date of loss",
+      "resolution": "denied",
+      "similarity": 0.9,
+      "amount_eur": 0,
+      "summary": "Cover had ceased for non-payment before the date of loss. A subsequent payment was held as a credit pending reinstatement and did not restore cover retrospectively. Claim denied on the lapse; the credit was refunded separately."
+    }
+  ]
+}

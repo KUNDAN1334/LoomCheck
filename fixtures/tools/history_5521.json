@@ -1,0 +1,14 @@
+{
+  "policy_number": "NF-5521",
+  "claims": [
+    {
+      "reference": "CL-2025-1188",
+      "date": "2025-12-19",
+      "peril": "escape_of_water",
+      "resolution": "approved",
+      "amount_eur": 2310
+    }
+  ],
+  "open_claims": 0,
+  "flags": ["payment_arrears_2026_04", "payment_arrears_2026_05"]
+}
