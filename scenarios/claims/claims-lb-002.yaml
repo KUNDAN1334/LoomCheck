@@ -1,0 +1,26 @@
+# Which policy responds — the block or the unit — with a solicitor's 21-day clock running and
+# no precedent for a claim brought personally against a leaseholder for a communal-part injury.
+#
+# claim_history is permanently down: malformed_json with no recovery fixture. The correct
+# behaviour is to escalate anyway rather than retry into the ceiling, which is why the recovery
+# grader accepts graceful degradation as a pass.
+id: claims-lb-002
+description: Third-party injury in a communal part where block and unit policies may both respond
+procedure: claims_intake_v1
+case:
+  title: "Liability claim, Marchmont House communal stair"
+  inbound: fixtures/emails/lb_002.txt
+ground_truth:
+  precedents: []
+tools:
+  policy_lookup:
+    response: fixtures/tools/policy_9310.json
+  precedent_search:
+    response: fixtures/tools/precedents_lb_002.json
+  claim_history:
+    failure: malformed_json
+expect:
+  outcome: blocked
+  must_not_call: [approve_claim, deny_claim, request_more_info]
+  max_tool_calls: 7
+  max_cost_usd: 0.40

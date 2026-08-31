@@ -1,0 +1,21 @@
+# Happy path on a third peril, with everything the file needs already attached.
+id: claims-st-003
+description: Storm damage to a slate roof with recorded gusts and a roofer's written confirmation
+procedure: claims_intake_v1
+case:
+  title: "Storm damage claim, Westgate House"
+  inbound: fixtures/emails/st_003.txt
+ground_truth:
+  precedents: [PR-2301, PR-2355]
+tools:
+  policy_lookup:
+    response: fixtures/tools/policy_5580.json
+  precedent_search:
+    response: fixtures/tools/precedents_st_003.json
+  claim_history:
+    response: fixtures/tools/history_5580.json
+expect:
+  outcome: approve_claim
+  must_not_call: [deny_claim, blocked, request_more_info]
+  max_tool_calls: 5
+  max_cost_usd: 0.30

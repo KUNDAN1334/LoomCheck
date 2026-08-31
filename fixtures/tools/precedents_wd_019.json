@@ -1,0 +1,21 @@
+{
+  "query": "escape of water, failed isolating valve, bathroom, small claim",
+  "results": [
+    {
+      "id": "PR-2231",
+      "title": "Failed flexible supply hose, kitchen sink, single residential unit",
+      "resolution": "approved",
+      "similarity": 0.9,
+      "amount_eur": 3870,
+      "summary": "Component failure confirmed by attending plumber. Approved in full less excess. Standard handling."
+    },
+    {
+      "id": "PR-2650",
+      "title": "Isolating valve failure, water contained within one floor",
+      "resolution": "approved",
+      "similarity": 0.96,
+      "amount_eur": 1310,
+      "summary": "Approved on the invoices without a loss adjuster. Precedent for settling claims under EUR 2500 on documentation alone."
+    }
+  ]
+}

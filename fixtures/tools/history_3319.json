@@ -1,0 +1,14 @@
+{
+  "policy_number": "NF-3319",
+  "claims": [
+    {
+      "reference": "CL-2025-0440",
+      "date": "2025-02-11",
+      "peril": "storm",
+      "resolution": "approved",
+      "amount_eur": 890
+    }
+  ],
+  "open_claims": 0,
+  "flags": []
+}

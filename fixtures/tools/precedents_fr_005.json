@@ -1,0 +1,21 @@
+{
+  "query": "kitchen fire, small appliance, counter and wall cabinets, active policy",
+  "results": [
+    {
+      "id": "PR-1988",
+      "title": "Toaster fire, kitchen counter and wall units",
+      "resolution": "approved",
+      "similarity": 0.94,
+      "amount_eur": 7200,
+      "summary": "Brigade attendance confirmed. Approved in full less excess. Redecoration of smoke-marked adjoining areas accepted as part of the loss."
+    },
+    {
+      "id": "PR-2044",
+      "title": "Small appliance fire, smoke damage beyond the room of origin",
+      "resolution": "approved",
+      "similarity": 0.89,
+      "amount_eur": 5400,
+      "summary": "Approved. Precedent for accepting smoke damage in adjoining rooms without a separate claim."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "query": "water ingress through failed rooflight seal, top floor flat, heavy rain",
+  "results": [
+    {
+      "id": "PR-2733",
+      "title": "Ingress through a failed valley gutter lining, top floor flat",
+      "resolution": "approved",
+      "similarity": 0.58,
+      "amount_eur": 4120,
+      "summary": "Different component, same reasoning. The lining failed suddenly rather than degrading progressively, so the loss was handled under accidental damage and the component repair was included. Not treated as storm despite heavy rain, because no storm conditions were recorded."
+    },
+    {
+      "id": "PR-2609",
+      "title": "Rain entering through perished mastic around a bay window",
+      "resolution": "approved",
+      "similarity": 0.44,
+      "amount_eur": 2260,
+      "summary": "Approved under accidental damage. The file turned on whether the perishing was sudden or a maintenance failure; the contractor's report settled it. Weak match on the component but the test applied is the one that matters here."
+    }
+  ]
+}

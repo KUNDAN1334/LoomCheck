@@ -1,0 +1,14 @@
+{
+  "policy_number": "NF-5580",
+  "claims": [
+    {
+      "reference": "CL-2024-1120",
+      "date": "2024-12-08",
+      "peril": "storm",
+      "resolution": "approved",
+      "amount_eur": 2400
+    }
+  ],
+  "open_claims": 0,
+  "flags": []
+}

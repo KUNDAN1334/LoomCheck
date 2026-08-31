@@ -1,0 +1,16 @@
+{
+  "policy_number": "NF-7002",
+  "claims": [
+    {
+      "reference": "CL-2025-0703",
+      "date": "2025-09-14",
+      "peril": "maintenance_inspection",
+      "resolution": "not_a_claim",
+      "amount_eur": 0
+    }
+  ],
+  "open_claims": 0,
+  "flags": [
+    "disrepair_noted_2025_09_rear_elevation_fascia"
+  ]
+}

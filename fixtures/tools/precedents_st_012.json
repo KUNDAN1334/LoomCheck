@@ -1,0 +1,21 @@
+{
+  "query": "storm damage to gutter and fascia, pre-existing rot noted by contractor",
+  "results": [
+    {
+      "id": "PR-2410",
+      "title": "Fascia and gutter failure where rot was previously identified",
+      "resolution": "denied",
+      "similarity": 0.94,
+      "amount_eur": 0,
+      "summary": "Contractor's own note recorded existing rot at the fixings. Denied under the disrepair exclusion: the storm was the occasion of the failure, not its cause. Upheld on review."
+    },
+    {
+      "id": "PR-2298",
+      "title": "Storm claim declined where disrepair was flagged at a prior inspection",
+      "resolution": "denied",
+      "similarity": 0.87,
+      "amount_eur": 0,
+      "summary": "Denied. Prior inspection record was decisive."
+    }
+  ]
+}

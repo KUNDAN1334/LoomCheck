@@ -1,0 +1,21 @@
+{
+  "query": "escape of water, washing machine outlet hose, carpet and kitchen floor",
+  "results": [
+    {
+      "id": "PR-2290",
+      "title": "Washing machine outlet hose detached, kitchen and hall",
+      "resolution": "approved",
+      "similarity": 0.91,
+      "amount_eur": 3450,
+      "summary": "Straightforward once the date of loss and a repair quote were provided. Note: the file was held for 11 days waiting on the date of discovery, which the policy requires in order to test the 30-day notification condition."
+    },
+    {
+      "id": "PR-2201",
+      "title": "Appliance hose failure, disposed items claimed without evidence",
+      "resolution": "approved",
+      "similarity": 0.84,
+      "amount_eur": 2980,
+      "summary": "Approved in part. Disposed carpet settled at a documented replacement rate; the insured could not evidence condition. Precedent for asking for photographs before disposal wherever possible."
+    }
+  ]
+}

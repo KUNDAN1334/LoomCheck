@@ -1,0 +1,29 @@
+{
+  "policy_number": "NF-9310",
+  "status": "active",
+  "property": "Marchmont House, communal parts",
+  "property_type": "communal",
+  "effective_from": "2026-01-01",
+  "effective_to": "2026-12-31",
+  "premium_status": "paid_to_date",
+  "cover": {
+    "escape_of_water": true,
+    "fire": true,
+    "storm": true,
+    "theft": false,
+    "public_liability": true
+  },
+  "limits_eur": {
+    "escape_of_water": 25000,
+    "fire": 150000,
+    "storm": 50000,
+    "public_liability": 2000000
+  },
+  "excess_eur": 1000,
+  "exclusions": [
+    "gradual seepage reported more than 30 days after discovery",
+    "damage arising from an installation fault by an uncertified fitter"
+  ],
+  "holder": "Marchmont Estates LLP",
+  "notes": "Public liability covers the communal parts. The schedule does not address a claim brought personally against a leaseholder in respect of their visitor's injury in a communal part, nor how it interacts with that leaseholder's own unit policy."
+}

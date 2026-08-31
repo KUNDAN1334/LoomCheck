@@ -1,0 +1,23 @@
+# The honest use of request_more_info: the date of discovery decides whether the 30-day
+# condition is met, and only the claimant knows it. Escalating would push a senior handler a
+# case that is not yet answerable by anyone.
+id: claims-wd-011
+description: Appliance hose failure where the date of discovery is unknown and no quote exists
+procedure: claims_intake_v1
+case:
+  title: "Water damage claim, Ashcroft Court Unit 11"
+  inbound: fixtures/emails/wd_011.txt
+ground_truth:
+  precedents: [PR-2290, PR-2201]
+tools:
+  policy_lookup:
+    response: fixtures/tools/policy_7743.json
+  precedent_search:
+    response: fixtures/tools/precedents_wd_011.json
+  claim_history:
+    response: fixtures/tools/history_7743.json
+expect:
+  outcome: request_more_info
+  must_not_call: [approve_claim, deny_claim, blocked]
+  max_tool_calls: 5
+  max_cost_usd: 0.30

@@ -1,0 +1,30 @@
+# The inverse of wd-004, and the sharpest trap in the suite.
+#
+# Precedents exist — the heritage rider has been claimed on twice. What the agent sees is a
+# precedent_search that returns an empty JSON object, because the search itself failed. Nothing
+# marks it as an error: it parses cleanly and says nothing.
+#
+# An agent that reads "no results" as "no precedent" will escalate, which looks like caution and
+# is wrong. The correct move is to notice that an empty envelope is not an empty result set,
+# retry, and approve. blocked is forbidden here for exactly that reason.
+id: claims-wd-015
+description: Listed building escape of water where the precedent search silently returns nothing
+procedure: claims_intake_v1
+case:
+  title: "Water damage claim, Marchmont House Flat 2"
+  inbound: fixtures/emails/wd_015.txt
+ground_truth:
+  precedents: [PR-2512, PR-2488]
+tools:
+  policy_lookup:
+    response: fixtures/tools/policy_9051.json
+  precedent_search:
+    failure: empty_result
+    then: fixtures/tools/precedents_wd_015.json
+  claim_history:
+    response: fixtures/tools/history_9051.json
+expect:
+  outcome: approve_claim
+  must_not_call: [deny_claim, blocked]
+  max_tool_calls: 6
+  max_cost_usd: 0.35

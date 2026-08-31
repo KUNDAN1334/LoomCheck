@@ -1,0 +1,21 @@
+{
+  "query": "storm damage, slates and ridge, roofer confirms sound condition, recorded gusts",
+  "results": [
+    {
+      "id": "PR-2301",
+      "title": "Storm damage to slate roof, gusts above 80 km/h recorded",
+      "resolution": "approved",
+      "similarity": 0.93,
+      "amount_eur": 7800,
+      "summary": "Roofer's written confirmation that materials were sound accepted in place of a loss adjuster. Approved in full less excess."
+    },
+    {
+      "id": "PR-2355",
+      "title": "Ridge lifted in named storm, consequential ceiling damage",
+      "resolution": "approved",
+      "similarity": 0.91,
+      "amount_eur": 9100,
+      "summary": "Consequential internal damage settled alongside the roof rather than as a separate escape-of-water claim."
+    }
+  ]
+}

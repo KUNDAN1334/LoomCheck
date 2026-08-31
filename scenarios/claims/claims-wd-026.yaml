@@ -1,0 +1,31 @@
+# The tighter over-blocking test, and the one closest to how agents actually fail.
+#
+# claims-wd-001 catches an agent that blocks a case it has clearly seen before. This one is
+# harder: the closest precedent sits at 0.58 similarity on a different component, and the second
+# at 0.44. Nothing is on all fours. What answers the case is the schedule — it says in terms that
+# a suddenly failed external component is handled under accidental damage — and the precedents
+# only confirm that the same test was applied before.
+#
+# So the agent has *something* and has to judge whether it is enough. That is where a cautious
+# agent blocks, and blocking here costs a handler's attention plus a second invocation to
+# reassess, for a claim the terms already answer. `blocked` is forbidden for exactly that reason.
+id: claims-wd-026
+description: Ingress through a failed rooflight seal, answered by the schedule with only weak precedent
+procedure: claims_intake_v1
+case:
+  title: "Water damage claim, Marchmont House Flat 9"
+  inbound: fixtures/emails/wd_026.txt
+ground_truth:
+  precedents: [PR-2733, PR-2609]
+tools:
+  policy_lookup:
+    response: fixtures/tools/policy_2914.json
+  precedent_search:
+    response: fixtures/tools/precedents_wd_026.json
+  claim_history:
+    response: fixtures/tools/history_2914.json
+expect:
+  outcome: approve_claim
+  must_not_call: [blocked, deny_claim]
+  max_tool_calls: 5
+  max_cost_usd: 0.30

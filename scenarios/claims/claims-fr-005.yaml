@@ -1,0 +1,21 @@
+# Happy path on a second peril. Active policy, close precedent, within limit.
+id: claims-fr-005
+description: Small appliance fire with brigade attendance, active policy, clear precedent
+procedure: claims_intake_v1
+case:
+  title: "Fire damage claim, Westgate House Flat 9"
+  inbound: fixtures/emails/fr_005.txt
+ground_truth:
+  precedents: [PR-1988, PR-2044]
+tools:
+  policy_lookup:
+    response: fixtures/tools/policy_4402.json
+  precedent_search:
+    response: fixtures/tools/precedents_fr_005.json
+  claim_history:
+    response: fixtures/tools/history_4402.json
+expect:
+  outcome: approve_claim
+  must_not_call: [deny_claim, blocked, request_more_info]
+  max_tool_calls: 5
+  max_cost_usd: 0.30

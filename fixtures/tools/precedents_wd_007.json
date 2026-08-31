@@ -1,0 +1,21 @@
+{
+  "query": "escape of water, weeping joint, discovered June reported August, late notification",
+  "results": [
+    {
+      "id": "PR-2404",
+      "title": "Escape of water notified 51 days after discovery",
+      "resolution": "denied",
+      "similarity": 0.93,
+      "amount_eur": 0,
+      "summary": "Tenant identified damp in March, notified in May. Denied under the 30-day notification exclusion. Upheld on review: the exclusion turns on the date of discovery, not the date the full extent became apparent."
+    },
+    {
+      "id": "PR-2377",
+      "title": "Slow leak, damage worsened between discovery and notification",
+      "resolution": "denied",
+      "similarity": 0.88,
+      "amount_eur": 0,
+      "summary": "Same pattern. Denied. The insured's argument that the damage looked minor at discovery was not accepted as a reason to extend the window."
+    }
+  ]
+}

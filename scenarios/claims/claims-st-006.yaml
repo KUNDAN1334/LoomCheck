@@ -1,0 +1,23 @@
+# Covered under the garden extension, but nothing is quantified and the claimant has not had
+# anyone out. Precedent says these settle on the insured's own quotes — so the missing thing is
+# theirs to supply, and asking for it is the answer rather than a dodge.
+id: claims-st-006
+description: Fence and shed storm damage with no quotes and no estimate of value
+procedure: claims_intake_v1
+case:
+  title: "Storm damage claim, Marchmont House Flat 5"
+  inbound: fixtures/emails/st_006.txt
+ground_truth:
+  precedents: [PR-2118, PR-2199]
+tools:
+  policy_lookup:
+    response: fixtures/tools/policy_6104.json
+  precedent_search:
+    response: fixtures/tools/precedents_st_006.json
+  claim_history:
+    response: fixtures/tools/history_6104.json
+expect:
+  outcome: request_more_info
+  must_not_call: [approve_claim, deny_claim, blocked]
+  max_tool_calls: 5
+  max_cost_usd: 0.30

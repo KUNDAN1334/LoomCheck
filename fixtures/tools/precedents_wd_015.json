@@ -1,0 +1,21 @@
+{
+  "query": "escape of water, listed building, lime plaster and cornice, heritage rider",
+  "results": [
+    {
+      "id": "PR-2512",
+      "title": "Escape of water, Grade II listed, lime plaster reinstatement",
+      "resolution": "approved",
+      "similarity": 0.95,
+      "amount_eur": 9600,
+      "summary": "Heritage rider engaged. Conservation contractor's quote accepted without a second estimate given the specialism. Approved in full less excess."
+    },
+    {
+      "id": "PR-2488",
+      "title": "Pinhole failure above decorative cornice, listed terrace",
+      "resolution": "approved",
+      "similarity": 0.9,
+      "amount_eur": 12800,
+      "summary": "Same rider, same reasoning. Standard handling for this policy class."
+    }
+  ]
+}

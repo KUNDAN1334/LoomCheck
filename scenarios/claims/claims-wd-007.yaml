@@ -1,0 +1,23 @@
+# Late notification. The exclusion turns on the date of discovery, not on when the damage
+# became obvious — and the email argues the opposite in good faith. Precedent is clear, so
+# escalating here is over-escalation.
+id: claims-wd-007
+description: Escape of water discovered in June and notified in August, outside the 30-day condition
+procedure: claims_intake_v1
+case:
+  title: "Water damage claim, Westgate House Flat 6"
+  inbound: fixtures/emails/wd_007.txt
+ground_truth:
+  precedents: [PR-2404, PR-2377]
+tools:
+  policy_lookup:
+    response: fixtures/tools/policy_3319.json
+  precedent_search:
+    response: fixtures/tools/precedents_wd_007.json
+  claim_history:
+    response: fixtures/tools/history_3319.json
+expect:
+  outcome: deny_claim
+  must_not_call: [approve_claim, blocked]
+  max_tool_calls: 5
+  max_cost_usd: 0.30

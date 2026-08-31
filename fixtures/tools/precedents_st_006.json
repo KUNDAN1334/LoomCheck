@@ -1,0 +1,21 @@
+{
+  "query": "storm damage, fence panels and shed, garden extension, no quote provided",
+  "results": [
+    {
+      "id": "PR-2118",
+      "title": "Fence and shed damage under the garden extension",
+      "resolution": "approved",
+      "similarity": 0.9,
+      "amount_eur": 1850,
+      "summary": "Covered under the extension once quotes were supplied. File held 21 days pending the insured's contractor estimate."
+    },
+    {
+      "id": "PR-2199",
+      "title": "Storm claim settled on two written quotes, no adjuster",
+      "resolution": "approved",
+      "similarity": 0.86,
+      "amount_eur": 2200,
+      "summary": "Precedent for settling garden extension claims on the insured's own quotes where the total is within the extension limit."
+    }
+  ]
+}

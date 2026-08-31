@@ -1,0 +1,21 @@
+{
+  "query": "theft from a flat, no sign of forced entry, police report obtained",
+  "results": [
+    {
+      "id": "PR-2150",
+      "title": "Theft claim declined for absence of forcible entry",
+      "resolution": "denied",
+      "similarity": 0.95,
+      "amount_eur": 0,
+      "summary": "Police report recorded no sign of forced entry. Denied under the forcible and violent entry condition. The insured's belief that the door was locked was not sufficient to displace the condition."
+    },
+    {
+      "id": "PR-2077",
+      "title": "Theft, insecure premises, receipts available",
+      "resolution": "denied",
+      "similarity": 0.88,
+      "amount_eur": 0,
+      "summary": "Denied on the same condition notwithstanding good documentation of the items."
+    }
+  ]
+}

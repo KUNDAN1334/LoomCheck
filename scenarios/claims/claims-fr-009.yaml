@@ -1,0 +1,24 @@
+# The schedule says "the dwelling" throughout and never defines whether a converted
+# outbuilding on the same title is inside that term. No precedent. policy_lookup times out
+# once on the way, so the agent has to retry the very tool holding the ambiguous wording.
+id: claims-fr-009
+description: Fire in a converted outbuilding the schedule neither includes nor excludes
+procedure: claims_intake_v1
+case:
+  title: "Fire damage claim, Marchmont Lodge outbuilding"
+  inbound: fixtures/emails/fr_009.txt
+ground_truth:
+  precedents: []
+tools:
+  policy_lookup:
+    failure: timeout
+    then: fixtures/tools/policy_2288.json
+  precedent_search:
+    response: fixtures/tools/precedents_fr_009.json
+  claim_history:
+    response: fixtures/tools/history_2288.json
+expect:
+  outcome: blocked
+  must_not_call: [approve_claim, deny_claim, request_more_info]
+  max_tool_calls: 6
+  max_cost_usd: 0.35

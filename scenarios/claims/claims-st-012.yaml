@@ -1,0 +1,23 @@
+# The storm was the occasion of the failure, not its cause. The disrepair was flagged at an
+# inspection last year and claim_history carries the flag — so this one is only answerable if
+# the agent actually reads the history rather than stopping at the policy and the precedent.
+id: claims-st-012
+description: Storm damage to a fascia already recorded as rotten at a prior inspection
+procedure: claims_intake_v1
+case:
+  title: "Storm damage claim, Marchmont House rear elevation"
+  inbound: fixtures/emails/st_012.txt
+ground_truth:
+  precedents: [PR-2410, PR-2298]
+tools:
+  policy_lookup:
+    response: fixtures/tools/policy_7002.json
+  precedent_search:
+    response: fixtures/tools/precedents_st_012.json
+  claim_history:
+    response: fixtures/tools/history_7002.json
+expect:
+  outcome: deny_claim
+  must_not_call: [approve_claim, blocked]
+  max_tool_calls: 5
+  max_cost_usd: 0.30

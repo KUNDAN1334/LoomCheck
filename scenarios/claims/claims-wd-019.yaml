@@ -1,0 +1,23 @@
+# A small, clean claim with a deliberately tight ceiling. Three lookups and a resolution is
+# four calls; anything more is the agent circling. This is the scenario that fails when a
+# procedure edit makes the agent verbose.
+id: claims-wd-019
+description: Failed isolating valve, small documented claim, clear precedent, tight budget
+procedure: claims_intake_v1
+case:
+  title: "Water damage claim, Ashcroft Court Unit 14"
+  inbound: fixtures/emails/wd_019.txt
+ground_truth:
+  precedents: [PR-2231, PR-2650]
+tools:
+  policy_lookup:
+    response: fixtures/tools/policy_6620.json
+  precedent_search:
+    response: fixtures/tools/precedents_wd_019.json
+  claim_history:
+    response: fixtures/tools/history_6620.json
+expect:
+  outcome: approve_claim
+  must_not_call: [deny_claim, blocked, request_more_info]
+  max_tool_calls: 4
+  max_cost_usd: 0.25

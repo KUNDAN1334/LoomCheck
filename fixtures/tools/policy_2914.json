@@ -1,0 +1,29 @@
+{
+  "policy_number": "NF-2914",
+  "status": "active",
+  "holder": "Marchmont Estates LLP",
+  "property": "Marchmont House, Flat 9",
+  "property_type": "residential",
+  "effective_from": "2026-01-01",
+  "effective_to": "2026-12-31",
+  "premium_status": "paid_to_date",
+  "cover": {
+    "escape_of_water": true,
+    "fire": true,
+    "storm": true,
+    "theft": true,
+    "accidental_damage": true
+  },
+  "limits_eur": {
+    "escape_of_water": 25000,
+    "fire": 150000,
+    "storm": 50000,
+    "accidental_damage": 20000
+  },
+  "excess_eur": 250,
+  "exclusions": [
+    "gradual seepage reported more than 30 days after discovery",
+    "damage caused by or arising from a lack of maintenance or existing disrepair"
+  ],
+  "notes": "Water entering through the sudden failure of an external building component \u2014 a seal, a flashing, a glazing unit \u2014 is handled under accidental damage. It is neither escape of water, which requires an internal water system, nor storm, which requires recorded storm conditions. The repair to the failed component itself is included where the failure is sudden rather than progressive."
+}

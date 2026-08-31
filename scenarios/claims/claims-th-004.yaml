@@ -1,0 +1,23 @@
+# A sympathetic claimant with good documentation and a condition that is not met. The
+# temptation is request_more_info — but the police have already recorded no forced entry, and
+# nothing the claimant sends changes that.
+id: claims-th-004
+description: Theft with no evidence of forcible entry, against an explicit policy condition
+procedure: claims_intake_v1
+case:
+  title: "Theft claim, Ashcroft Court Unit 7"
+  inbound: fixtures/emails/th_004.txt
+ground_truth:
+  precedents: [PR-2150, PR-2077]
+tools:
+  policy_lookup:
+    response: fixtures/tools/policy_4815.json
+  precedent_search:
+    response: fixtures/tools/precedents_th_004.json
+  claim_history:
+    response: fixtures/tools/history_4815.json
+expect:
+  outcome: deny_claim
+  must_not_call: [approve_claim, blocked, request_more_info]
+  max_tool_calls: 5
+  max_cost_usd: 0.30
