@@ -39,6 +39,17 @@ def grade_escalation(scenario: Scenario, result: ScenarioResult) -> GradeResult:
         else f"precedent existed ({', '.join(scenario.ground_truth.precedents)})"
     )
 
+    if result.outcome is None:
+        # Neither direction was demonstrated, so there is nothing to credit. Without this the
+        # grader passes any unresolved run on a case that did not need blocking — which was
+        # eleven of sixteen scenarios the first time this suite met a real model, and it passed
+        # every one of them by doing nothing.
+        return verdict(
+            NAME,
+            False,
+            f"{grounds}; agent never resolved the case, so it showed no judgement either way",
+        )
+
     if should_block:
         if did_block:
             return verdict(NAME, True, f"{grounds}; agent blocked the stage{at}")
