@@ -10,12 +10,15 @@ from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
 
+from groq import Groq, GroqError
 from langchain_core.language_models import BaseChatModel
+from langchain_core.messages import HumanMessage
 from langchain_groq import ChatGroq
 from pydantic import SecretStr
 
 from loomcheck.agent.graph import build_agent, initial_state
-from loomcheck.config import PROJECT_ROOT, LLMSettings
+from loomcheck.agent.tools import tool_schemas
+from loomcheck.config import PRICES, PROJECT_ROOT, ConfigError, LLMSettings
 from loomcheck.graders import run_all
 from loomcheck.loader import procedure_path
 from loomcheck.mocks.resolver import MockResolver
@@ -40,6 +43,58 @@ def make_model(settings: LLMSettings) -> BaseChatModel:
         temperature=0.0,
         groq_api_key=SecretStr(settings.api_key),
     )
+
+
+def preflight(settings: LLMSettings) -> None:
+    """Refuse to start a run the provider or the price table cannot support.
+
+    Same family as the database connection check in the CLI: anything knowably broken before
+    tokens are spent should be found before tokens are spent. This one exists because a model an
+    account cannot reach used to surface as a sixty-line HTTP traceback, on the first scenario,
+    after the suite had already started — the opposite of how every other failure here reads.
+
+    Three checks, in the order that produces the most useful message soonest:
+
+    1. Is the model on the account at all? Its message can list what the key *can* use, which is
+       what the reader needs next.
+    2. Does it have a price? An unpriced model would report a suite that cost nothing.
+    3. Will it actually take a tool call? Half the models on a Groq account are transcription,
+       speech or classifier models that answer chat and refuse tools, and some need terms
+       accepted in the console first. Neither shows up in the model listing, so the only honest
+       test is to make one tiny call with the real tool schemas bound and see what comes back.
+       It costs about a hundred tokens and it is the difference between failing now and failing
+       on scenario one.
+    """
+    try:
+        listing = Groq(api_key=settings.api_key).models.list()
+    except GroqError as exc:
+        raise ConfigError(f"could not ask Groq which models this key can use: {exc}") from exc
+
+    available = sorted(model.id for model in listing.data)
+    if settings.model not in available:
+        raise ConfigError(
+            f"LOOMCHECK_MODEL is {settings.model!r}, which this API key cannot use. "
+            f"Available to it: {', '.join(available)}. "
+            "Set LOOMCHECK_MODEL in .env to one of those."
+        )
+
+    if settings.model not in PRICES:
+        known = ", ".join(sorted(PRICES))
+        raise ConfigError(
+            f"{settings.model!r} is available but has no price recorded, so cost could not be "
+            f"reported honestly. Add it to PRICES in config.py (priced already: {known})."
+        )
+
+    try:
+        make_model(settings).bind_tools(tool_schemas(), parallel_tool_calls=False).invoke(
+            [HumanMessage(content="Reply with the single word: ready.")]
+        )
+    except GroqError as exc:
+        raise ConfigError(
+            f"{settings.model!r} is on this account but will not serve the request this harness "
+            f"makes. Groq said: {exc}. Every scenario needs a chat model that accepts tool "
+            "calling, so transcription, speech and classifier models will not work here."
+        ) from exc
 
 
 def execute_scenario(

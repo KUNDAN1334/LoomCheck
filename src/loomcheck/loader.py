@@ -167,7 +167,7 @@ def _check_referenced_files_exist(
             field = ".".join(str(part) for part in loc)
             raise ScenarioError(
                 path,
-                f"'{field}' points at {relative}, which does not exist",
+                f"'{field}' points at {relative.as_posix()}, which does not exist",
                 _line_of(nodes, loc),
             )
 

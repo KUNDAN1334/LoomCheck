@@ -33,7 +33,7 @@ from loomcheck.report import (
     render_run_report,
     render_runs_table,
 )
-from loomcheck.runner import execute_run, make_model
+from loomcheck.runner import execute_run, make_model, preflight
 
 app = typer.Typer(add_completion=False)
 
@@ -95,6 +95,7 @@ def run(
     try:
         sessions = _session_factory()
         llm = load_llm_settings()
+        preflight(llm)
     except ConfigError as exc:
         raise _fail(str(exc)) from exc
 
