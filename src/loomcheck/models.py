@@ -185,6 +185,15 @@ class ScenarioResult(BaseModel):
     grades: list[GradeResult] = Field(default_factory=list)
     total_cost_usd: float = 0.0
 
+    final_message: str | None = None
+    """What the agent said instead of acting, when it ended without calling a terminal tool.
+
+    Only a tool call produces a TurnRecord, so an agent that writes prose and stops leaves no
+    trace at all — and "never called a terminal tool" is the most common real failure there is.
+    This is the one piece of evidence that explains it, and it is set only when `outcome` is
+    None, because otherwise the final message is just commentary on an action already recorded.
+    """
+
 
 class RunReport(BaseModel):
     """One invocation of `loomcheck run`, across every scenario it touched."""

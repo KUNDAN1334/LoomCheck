@@ -84,6 +84,10 @@ class ScenarioResultRow(Base):
     repetition: Mapped[int] = mapped_column(Integer, default=1)
     outcome: Mapped[str | None] = mapped_column(String(32))
     total_cost_usd: Mapped[float] = mapped_column(Float, default=0.0)
+    final_message: Mapped[str | None] = mapped_column(Text)
+    """What the agent wrote instead of acting. Only set on an unresolved run, and the only
+    evidence there is for the commonest real failure — see models.ScenarioResult."""
+
     run: Mapped[Run] = relationship(back_populates="results")
     turns: Mapped[list[TurnRow]] = relationship(
         back_populates="result_row", cascade="all, delete-orphan"
@@ -173,6 +177,7 @@ def save_run(session: Session, report: RunReport) -> None:
             repetition=result.repetition,
             outcome=result.outcome.value if result.outcome else None,
             total_cost_usd=result.total_cost_usd,
+            final_message=result.final_message,
         )
         row.turns = [
             TurnRow(
@@ -251,6 +256,7 @@ def load_run(session: Session, run_id: UUID) -> RunReport:
                 repetition=row.repetition,
                 outcome=Outcome(row.outcome) if row.outcome else None,
                 total_cost_usd=row.total_cost_usd,
+                final_message=row.final_message,
                 turns=[
                     TurnRecord(
                         index=turn.index,

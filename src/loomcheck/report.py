@@ -178,6 +178,11 @@ def render_run_detail(report: RunReport) -> None:
             )
         console.print(turns)
 
+        if result.final_message:
+            # The run ended without acting. This is the only record of what it did instead.
+            console.print("\n  [yellow]ended without acting. it wrote:[/yellow]")
+            console.print(f"  [dim]{escape(result.final_message.strip())}[/dim]")
+
         for grade in result.grades:
             if not grade.applicable:
                 symbol, colour = "–", "dim"

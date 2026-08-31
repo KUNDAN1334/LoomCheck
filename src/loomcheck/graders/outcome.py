@@ -13,6 +13,20 @@ from loomcheck.models import GradeResult, Scenario, ScenarioResult
 
 NAME = "outcome"
 
+QUOTE_LIMIT = 160
+"""Long enough to see what the agent was doing instead, short enough that a failures list stays
+scannable. The whole message is in `loomcheck show`."""
+
+
+def _quote(message: str | None) -> str:
+    if not message:
+        return ""
+    collapsed = " ".join(message.split())
+    if len(collapsed) > QUOTE_LIMIT:
+        collapsed = collapsed[: QUOTE_LIMIT - 1] + "…"
+    return f'; it wrote: "{collapsed}"'
+
+
 def grade_outcome(scenario: Scenario, result: ScenarioResult) -> GradeResult:
     expected = scenario.expect.outcome
 

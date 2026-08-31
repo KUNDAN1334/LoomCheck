@@ -55,6 +55,19 @@ class Recorder:
             cost_usd=cost_usd(self._model, tokens_in, tokens_out),
         )
 
+    def note_final_message(self, text: str) -> None:
+        """Record text the agent produced that never arrived as a normal response.
+
+        There is one path to this: the provider rejects the generation instead of returning it,
+        because the binding requires a tool call and the model wrote prose. The prose is in the
+        error body and it is the only account of what the agent decided, so it is kept exactly as
+        `observe_model_call` keeps the text of an ordinary last turn.
+
+        What is *not* kept is the cost. A rejected generation still burns tokens, but the 400
+        carries no usage figures, so the alternative to omitting it is inventing it.
+        """
+        self._last_text = text
+
     def capture(
         self,
         tool: str,
