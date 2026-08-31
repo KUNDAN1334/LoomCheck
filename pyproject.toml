@@ -1,0 +1,61 @@
+[project]
+name = "loomcheck"
+version = "0.1.0"
+description = "Regression and drift harness for multi-step AI agent workflows"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.7",
+    "pyyaml>=6.0",
+    "typer>=0.12",
+    "rich>=13.7",
+    "sqlalchemy>=2.0",
+    "alembic>=1.13",
+    "psycopg[binary]>=3.1",
+    "python-dotenv>=1.0",
+    "langgraph>=1.2.11",
+    "langchain-core>=1.6.0",
+    "langchain-groq>=1.1.3",
+]
+
+[project.scripts]
+loomcheck = "loomcheck.cli:app"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "mypy>=1.10",
+    "ruff>=0.5",
+    "types-PyYAML>=6.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/loomcheck"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM", "RUF"]
+# RUF001 flags en dashes as ambiguous. This is a terminal tool: an en dash is a deliberate
+# glyph in output, not a mistyped hyphen.
+ignore = ["RUF001"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src", "tests"]
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = "alembic.*"
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+addopts = "-ra"

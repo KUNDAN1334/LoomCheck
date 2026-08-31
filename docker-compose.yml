@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: loomcheck
+      POSTGRES_PASSWORD: loomcheck
+      POSTGRES_DB: loomcheck
+    ports:
+      - "5433:5432"
+    volumes:
+      - loomcheck_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U loomcheck"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://loomcheck:loomcheck@db:5432/loomcheck
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    working_dir: /app
+    # No default command: the app service exists so `docker compose run --rm app loomcheck ...`
+    # works on a machine without a local Python. Day-to-day the CLI runs on the host.
+    entrypoint: ["uv", "run"]
+    command: ["loomcheck", "--help"]
+
+volumes:
+  loomcheck_pgdata:
