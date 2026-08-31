@@ -47,7 +47,12 @@ def build_agent(
     sharing one across scenarios would let the second scenario in a suite see the first
     scenario's call history.
     """
-    bound = model.bind_tools(tool_schemas(), parallel_tool_calls=False)
+    # `tool_choice="required"` states the contract at the binding: the agent's only route out of
+    # this loop is a tool call, so every turn must be one. Without it, gpt-oss-class models end
+    # the case by *writing* `deny_claim({...})` into the message content — the right decision in
+    # the wrong form — and the harness scores a judgement failure that was a protocol failure.
+    # See docs/learning.md L-017.
+    bound = model.bind_tools(tool_schemas(), tool_choice="required", parallel_tool_calls=False)
 
     def call_model(state: AgentState) -> dict[str, Any]:
         started = perf_counter()

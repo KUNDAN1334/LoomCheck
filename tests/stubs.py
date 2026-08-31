@@ -11,11 +11,14 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Any
 
+import httpx
+from groq import BadRequestError
 from langchain_core.callbacks import CallbackManagerForLLMRun
 from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import AIMessage, BaseMessage
 from langchain_core.outputs import ChatGeneration, ChatResult
 from langchain_core.runnables import Runnable
+from pydantic import ConfigDict
 
 
 def tool_call(
@@ -81,10 +84,17 @@ def other_bad_request() -> BadRequestError:
 
 
 class ScriptedChatModel(BaseChatModel):
-    """Returns queued responses in order, repeating the last one once the script runs out."""
+    """Returns queued responses in order, repeating the last one once the script runs out.
+
+    A script entry may be an exception instead of a message, which is how a provider rejection
+    gets into a test: the failure this reproduces happens at the call, not in its result.
+    """
 
     # Pydantic fields on BaseChatModel, not class attributes, so the mutable default is fine.
-    script: list[AIMessage] = []  # noqa: RUF012
+    # `BadRequestError` is not a pydantic model, so the field needs arbitrary types allowed;
+    # without it pydantic tries to validate the exception *into* an AIMessage.
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+    script: list[BadRequestError | AIMessage] = []  # noqa: RUF012
     calls: int = 0
 
     @property
@@ -100,11 +110,15 @@ class ScriptedChatModel(BaseChatModel):
     ) -> ChatResult:
         index = min(self.calls, len(self.script) - 1)
         self.calls += 1
+        scripted = self.script[index]
+        if isinstance(scripted, BadRequestError):
+            raise scripted
+
         # Every response gets a fresh id, as a real provider's would. Returning the same
         # message object twice makes LangGraph's add_messages reducer treat the second as an
         # update to the first and replace it in place, which silently truncates the loop
         # instead of extending it. That is a stub artifact, not agent behaviour.
-        response = self.script[index].model_copy(deep=True)
+        response = scripted.model_copy(deep=True)
         response.id = f"stub-{self.calls}"
         for position, call in enumerate(response.tool_calls):
             call["id"] = f"call-{self.calls}-{position}"

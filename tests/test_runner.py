@@ -8,6 +8,7 @@ noticing until a suite has already been paid for.
 from __future__ import annotations
 
 import pytest
+from groq import BadRequestError
 
 from loomcheck.agent.graph import ParallelToolCallError
 from loomcheck.config import PROJECT_ROOT
@@ -16,7 +17,14 @@ from loomcheck.loader import load_scenario
 from loomcheck.mocks.resolver import UndeclaredToolError
 from loomcheck.models import InjectedFailure, Outcome
 from loomcheck.runner import MAX_TURNS, execute_run, execute_scenario
-from tests.stubs import ScriptedChatModel, parallel_tool_calls, prose, tool_call
+from tests.stubs import (
+    ScriptedChatModel,
+    other_bad_request,
+    parallel_tool_calls,
+    prose,
+    rejected,
+    tool_call,
+)
 
 CLAIMS = PROJECT_ROOT / "scenarios" / "claims"
 MODEL = "llama-3.3-70b-versatile"
@@ -76,6 +84,35 @@ def test_prose_with_no_tool_call_ends_the_run_but_still_costs() -> None:
     assert result.outcome is None
     assert result.turns == []
     assert result.total_cost_usd > 0
+
+
+def test_a_rejected_generation_is_recorded_as_an_unresolved_scenario() -> None:
+    """`tool_choice="required"` makes a prose ending a 400 rather than a response. The suite has
+    to survive it: sixteen scenarios must not end on the first agent that talks instead of acts,
+    and the text the provider refused is the only account of what it decided."""
+    scenario = load_scenario(CLAIMS / "claims-wd-001.yaml")
+    script = [
+        tool_call("policy_lookup", {"policy_number": "NF-7710"}),
+        rejected("**blocked**\nReason: no precedent covers a converted outbuilding."),
+    ]
+    result = execute_scenario(scenario, ScriptedChatModel(script=script), MODEL)
+
+    assert result.outcome is None
+    assert [t.tool for t in result.turns] == ["policy_lookup"]
+    assert result.final_message is not None
+    assert "converted outbuilding" in result.final_message
+
+    grades = {g.grader: g for g in run_all(scenario, result)}
+    assert not grades["outcome"].passed
+    assert "converted outbuilding" in grades["outcome"].reason
+
+
+def test_a_bad_request_that_is_not_the_agents_doing_still_raises() -> None:
+    """Only `tool_use_failed` is agent behaviour. A schema or context fault is ours, and
+    recording it as a failed scenario would hide our own bug inside the agent's score."""
+    scenario = load_scenario(CLAIMS / "claims-wd-001.yaml")
+    with pytest.raises(BadRequestError):
+        execute_scenario(scenario, ScriptedChatModel(script=[other_bad_request()]), MODEL)
 
 
 def test_calling_a_tool_the_scenario_does_not_mock_fails_the_run() -> None:

@@ -10,7 +10,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
 
-from groq import Groq, GroqError
+from groq import BadRequestError, Groq, GroqError
 from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import HumanMessage
 from langchain_groq import ChatGroq
@@ -97,6 +97,28 @@ def preflight(settings: LLMSettings) -> None:
         ) from exc
 
 
+def rejected_generation(exc: BadRequestError) -> str | None:
+    """The prose Groq refused to return, or None if this 400 is about something else.
+
+    With `tool_choice="required"` bound, a model that writes its decision as text instead of
+    calling a tool gets no response at all: the provider returns 400 `tool_use_failed` and puts
+    the generation in the error body. That text is the same evidence `final_message` exists to
+    keep — the difference is only that it arrives through an exception.
+
+    Narrow on purpose. Every other 400 — a malformed schema, an over-long context — is a fault in
+    the harness or the scenario, and swallowing it as "the agent didn't resolve the case" would
+    turn a bug of ours into a mark against the agent.
+    """
+    body = getattr(exc, "body", None)
+    if not isinstance(body, dict):
+        return None
+    error = body.get("error")
+    if not isinstance(error, dict) or error.get("code") != "tool_use_failed":
+        return None
+    generation = error.get("failed_generation")
+    return generation if isinstance(generation, str) else None
+
+
 def execute_scenario(
     scenario: Scenario,
     model: BaseChatModel,
@@ -122,10 +144,22 @@ def execute_scenario(
     inbound = (root / scenario.case.inbound).read_text(encoding="utf-8")
     case = f"{scenario.case.title}\n\n{inbound}"
 
-    final = agent.invoke(
-        initial_state(instructions, case),
-        {"recursion_limit": MAX_TURNS * 2 + 10},
-    )
+    try:
+        final = agent.invoke(
+            initial_state(instructions, case),
+            {"recursion_limit": MAX_TURNS * 2 + 10},
+        )
+    except BadRequestError as exc:
+        text = rejected_generation(exc)
+        if text is None:
+            raise
+        # The agent wrote its decision instead of calling a tool and the provider dropped the
+        # response on the floor. That is an unresolved scenario, which this harness already knows
+        # how to record — one scenario's protocol failure must not take the other fifteen down
+        # with it. The turns before this one are already in the recorder, so the trace still
+        # reads back: every tool the agent called, then what it said instead of finishing.
+        recorder.note_final_message(text)
+        return recorder.finish(None)
     return recorder.finish(final["outcome"])
 
 
